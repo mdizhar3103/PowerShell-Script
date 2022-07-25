@@ -79,3 +79,29 @@ get-eventlog -LogName System -Newest 100 | Group-Object -Property source -NoElem
 >>> Get-Eventlog System -EntryType Error -Newest 1000 -ComputerName $computername
 >>> Get-Eventlog System -EntryType Error -Newest 1000 -ComputerName $computername | Group -Property Source -NoElement
 ```
+
+
+#### Using array
+>>> $num = 1..10
+>>> $num.count
+>>> $num -is [array]
+>>> $num | Get-Member
+>>> $num | foreach-object { $_ * 5}
+>>> $num | foreach-object { $_ * 5} | measure-object -sum
+
+>>> get-process | where starttime |  select Name,ID,@{Name='Run';Expression={(Get-Date)-$_.starttime}} | sort Run -Descending | Select -first 5
+
+
+#### Working with String 
+```powershell
+>>> $s = "Mohd Izhar"
+>>> $s | Get-Member
+>>> $s.length
+>>> $s.toUpper()
+>>> $s.substring(4)
+>>> $s.substring(1,4)
+>>> $s.IndexOf("o")
+>>> $s.LastIndexOf("h")
+>>> $s.replace("o", "0")
+>>> $s.split(" ")
+```
