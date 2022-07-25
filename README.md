@@ -106,3 +106,23 @@ get-eventlog -LogName System -Newest 100 | Group-Object -Property source -NoElem
 >>> $s.replace("o", "0")
 >>> $s.split(" ")
 ```
+
+#### Using Datetime
+```powershell
+
+>>> $now = Get-Date
+>>> $now | get-member | more
+>>> $now | select *
+>>> $now.ToShortDateString()
+>>> $now.ToShortTimeString()
+>>> $now.ToUniversalTime()
+>>> Get-Date -Format ddMMyyyy
+>>> Get-Date -Format ddMMyyyy_hhmmss
+>>> $now.AddDays(42)
+>>> $now.AddHours(500)
+>>> "3/31/2022 9:30pm" -as [datetime]
+
+# list file created after 45 days ago
+>>> $lastdate = (Get-Date).AddDays(-45).Date
+>>> dir .\ -File | where {$_.LastWriteTime -le $lastdate}
+```
