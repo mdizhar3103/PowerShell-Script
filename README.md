@@ -82,6 +82,7 @@ get-eventlog -LogName System -Newest 100 | Group-Object -Property source -NoElem
 
 
 #### Using array
+```powershell
 >>> $num = 1..10
 >>> $num.count
 >>> $num -is [array]
@@ -90,7 +91,7 @@ get-eventlog -LogName System -Newest 100 | Group-Object -Property source -NoElem
 >>> $num | foreach-object { $_ * 5} | measure-object -sum
 
 >>> get-process | where starttime |  select Name,ID,@{Name='Run';Expression={(Get-Date)-$_.starttime}} | sort Run -Descending | Select -first 5
-
+```
 
 #### Working with String 
 ```powershell
