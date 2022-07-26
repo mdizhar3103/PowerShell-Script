@@ -191,3 +191,12 @@ get-eventlog -LogName System -Newest 100 | Group-Object -Property source -NoElem
 >>> $PSDefaultParameterValues.remove("get-ciminstance:verbose")
 >>> $PSDefaultParameterValues.clear()           # to clear all default values
 ```
+
+### Controller Script
+Powershell Script that orchestrates or runs other Powershell commands, functions and scripts
+```powershell
+>>> Get-Volume -DriveLetter C -CimSession $env:computername | Select-object PSComputername,DriveLetter,Size,SizeRemaining,@{Name="PctFree";Expression={($_.SizeRemaining/$_.size)*100}}
+
+# See: disk-check.ps1
+# See: disk-report.ps1
+```
