@@ -126,3 +126,68 @@ get-eventlog -LogName System -Newest 100 | Group-Object -Property source -NoElem
 >>> $lastdate = (Get-Date).AddDays(-45).Date
 >>> dir .\ -File | where {$_.LastWriteTime -le $lastdate}
 ```
+
+#### Using Math functions
+```powershell
+>>> [math]
+>>> [math].GetMembers() | Select Name,MemberType -unique | sort MemberType,Name | more
+>>> [math]::PI
+>>> [math]::E
+>>> [math]::pow.OverloadDefinitions
+>>> [math]::pow(3, 2)
+>>> [math]::sqrt(9)
+>>> $num = 12345.6789
+>>> [math]::Round($num, 2)
+>>> [math]::Truncate($num)
+>>> $num -as [int]              # treat this number as int
+
+>>> Get-CimInstance win32_operatingsystem | Select *memory*
+>>> Get-CimInstance win32_operatingsystem -ComputerName $env:computername | Select PSComputername,@{Name="TotalMemGB";Expression={$_.totalvisiblememorysize/1MB -as [int]}}, @{Name="FreeMemGB";Expression={ [math]::Round(($_.freephysicalmemory/1Mb),4)}}, @{Name="PctFreeMem";Expression = { [math]::Round(($_.freephysicalmemory/$_.totalvisiblememorysize)*100, 2)}}
+
+```
+
+#### Working with other available function
+```powershell
+>>> $wsh = new-object -com wscript.shell
+>>> $wsh.Popup.OverloadDefinitions
+>>> $wsh.Popup("Press the key to continue.", 10, "Powershell Automation", 0+64) 
+>>> $wsh.Popup("Wrong Key Pressed. Do you want to try again", -1, "Script Error", 4+32)
+
+# window title
+>>> $host.ui.RawUI.WindowTitle
+
+# script.ps1
+
+"Server-1", "Server-2", "Server-3" | foreach-object {
+    $host.ui.RawUI.WindowTitle = "Querying uptime from $($_.toUpper())"
+    start-sleep -Seconds 2
+    Get-CimInstance win32_OperatingSystem -computername $_ | Select PSComputername, LastBootUpTime, @{Name="Uptime";Expression={(Get-Date) - $_.LastBootUpTime }}
+}
+
+>>> $host.ui.RawUI
+
+# Get-Services
+>>> $fg = $host.ui.RawUI.ForegroundColor
+>>> get-service | foreach {
+    if ($_.status -eq 'stopped'){
+        $host.ui.RawUI.ForegroundColor = "red"
+    } else {
+        $host.ui.RawUI.ForegroundColor = $fg
+    }
+    $_
+}
+
+>>> $bg = $host.ui.RawUI.BackgroundColor
+>>> $host.ui.RawUI.BackgroundColor = "black"
+
+# Default PS parameters values
+>>> $PSDefaultParameterValues.Add("get-eventlog:logname","system")
+>>> $PSDefaultParameterValues.Add("get-ciminstance:verbose",$True)
+>>> $PSDefaultParameterValues
+>>> get-eventlog -Newest 10
+>>> get-eventlog -LogName application -Newest 10
+>>> get-ciminstance Win32_NetworkAdapter
+
+>>> $PSDefaultParameterValues.remove("get-ciminstance:verbose")
+>>> $PSDefaultParameterValues.clear()           # to clear all default values
+```
