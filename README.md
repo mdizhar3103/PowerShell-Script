@@ -200,3 +200,9 @@ Powershell Script that orchestrates or runs other Powershell commands, functions
 # See: disk-check.ps1
 # See: disk-report.ps1
 ```
+
+### Testing Remote Connection
+```powershell
+Test-NetConnection -ComputerName ipaddress/hostname -Port specific_port_number
+Ex: Test-NetConnection -ComputerName 1.2.1.2 -Port 1521
+```
