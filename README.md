@@ -206,3 +206,9 @@ Powershell Script that orchestrates or runs other Powershell commands, functions
 Test-NetConnection -ComputerName ipaddress/hostname -Port specific_port_number
 Ex: Test-NetConnection -ComputerName 1.2.1.2 -Port 1521
 ```
+
+### Net config
+```powershell
+get-netipconfiguration
+sconfig
+```
